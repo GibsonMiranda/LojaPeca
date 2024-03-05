@@ -1,10 +1,11 @@
 ﻿namespace LojaPeca.Modelos
 {
-    internal class VendaPeca
+    public class VendaPeca
     {
-        public Venda? Venda { get; set; }
-        public Peca? Peca { get; set; }
-        public decimal ValorUnitario { get; set; }
+        public int Id { get; set; }
+        public virtual Venda Venda { get; set; }
+        public virtual Peca Peca { get; set; }
+        public double ValorUnitario { get; set; }
         public int Quantidade { get; set; }
     }
 }

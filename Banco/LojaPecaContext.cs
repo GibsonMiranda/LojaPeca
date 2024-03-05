@@ -10,17 +10,20 @@ namespace LojaPeca.Banco
 {
     internal class LojaPecaContext : DbContext
     {
-        public DbSet<Peca> pecas {get; set;}
+        public DbSet<Peca> Peca {get; set;}
 
-        public DbSet<Venda> vendas { get; set; }
+        public DbSet<Venda> Venda { get; set; }
+
+        public DbSet<VendaPeca> VendaPeca { get; set; }
 
 
-        string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial " +
-            "Catalog=LojaPeca;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+        private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=LojaPeca;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server " +
+            "Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.UseSqlServer(connectionString).UseLazyLoadingProxies();
+
         }
     }
 }
