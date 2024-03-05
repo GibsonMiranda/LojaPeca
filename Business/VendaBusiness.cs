@@ -13,9 +13,9 @@ namespace LojaPeca.Business
 {
     internal class VendaBusiness
     {
-        LojaPecaDAO<Peca> peca = new LojaPecaDAO<Peca>(new LojaPecaContext());
-        LojaPecaDAO<Venda> venda = new LojaPecaDAO<Venda>(new LojaPecaContext());
-        LojaPecaDAO<VendaPeca> vendaPeca = new LojaPecaDAO<VendaPeca>(new LojaPecaContext());
+        LojaPecaDAO<Peca> peca = new LojaPecaDAO<Peca>();
+        LojaPecaDAO<Venda> venda = new LojaPecaDAO<Venda>();
+        LojaPecaDAO<VendaPeca> vendaPeca = new LojaPecaDAO<VendaPeca>();
         public Peca CriarPeca(string descricao, double valor)
         {
             var pecaExistente = peca.RecuperarUmPor(p => p.Descricao.Equals(descricao) && p.Valor == valor);
@@ -76,8 +76,20 @@ namespace LojaPeca.Business
                 ValorUnitario = peca.Valor,
             };
             vendaPeca.Atualizar(novaVendaPeca2);
-            //vendaPeca.Adicionar(novaVendaPeca2);
-            
+            //vendaPeca.Adicionar(novaVendaPeca2);          
+        }
+        public void LimparVenda(int idVenda)
+        {
+            var vendaExistenteVP = vendaPeca.RecuperarUmPor(v => v.Venda.Id == idVenda);
+            var pecaDeletar = vendaPeca.RecuperarUmPor(v => v.Venda.Id == idVenda && v.Peca.Id > 0);
+            vendaExistenteVP.ValorUnitario = 0;
+            vendaExistenteVP.Quantidade = 0;
+            if (vendaExistenteVP is not null) 
+            {
+
+                vendaPeca.Deletar(pecaDeletar);
+                vendaPeca.Atualizar(vendaExistenteVP);
+            }
         }
     }
 }

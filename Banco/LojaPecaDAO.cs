@@ -8,12 +8,9 @@ namespace LojaPeca.Banco
 {
     internal class LojaPecaDAO<T> where T : class
     {
-        protected readonly LojaPecaContext context; // protected permite que a classe herdeira utilize metodos e membros
+        protected readonly LojaPecaContext context = new LojaPecaContext(); // protected permite que a classe herdeira utilize metodos e membros
 
-        public LojaPecaDAO(LojaPecaContext context)
-        {
-            this.context = context;
-        }
+        
         public IEnumerable<T> Listar()
         {
             return context.Set<T>().ToList(); // já pega a lista dos artistas bem rapidin

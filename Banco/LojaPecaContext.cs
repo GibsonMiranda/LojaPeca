@@ -17,7 +17,7 @@ namespace LojaPeca.Banco
         public DbSet<VendaPeca> VendaPeca { get; set; }
 
 
-        private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=LojaPeca;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server " +
+        private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=LojaPeca;Integrated Security=True; MultipleActiveResultSets=True;Connect Timeout=30;Encrypt=False;Trust Server " +
             "Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
