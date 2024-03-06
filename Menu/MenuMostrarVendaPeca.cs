@@ -16,12 +16,10 @@ namespace LojaPeca.Menu
             base.Executar();
             ExibirTituloDaOpcao("Mostrar Relação de Vendas");
             Thread.Sleep(3000);
-            LojaPecaDAO<VendaPeca> vendaPeca = new LojaPecaDAO<VendaPeca>();
+            LojaPecaDAO<VendaPeca> vendaPeca = new LojaPecaDAO<VendaPeca>(new LojaPecaContext());
             foreach (var vendaP in vendaPeca.Listar())
             {
-                Console.WriteLine($"ID VendaPeça: {vendaP.Id} \n " +
-                    $"- ID Venda: {vendaP.Venda.Id} - " +
-                    $"ID Peça: {vendaP.Peca.Id} - Qtd {vendaP.Quantidade} - Valor Unitário: R$ {vendaP.Peca.Valor} - Total: R$ {vendaP.Quantidade * vendaP.Peca.Valor}");
+                Console.WriteLine(vendaP.ToString());
             }
 
             Console.WriteLine("Digite uma tecla para voltar ao menu principal");

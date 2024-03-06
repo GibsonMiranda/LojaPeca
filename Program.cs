@@ -42,5 +42,16 @@ void ExibirOpcoesDoMenu()
         Console.WriteLine("Opção inválida");
     }
 }
+try
+{
+    ExibirOpcoesDoMenu();
+} catch(Exception ex)
+{
+    Console.WriteLine(ex.Message);
+  
+    Console.WriteLine("digite qualquer tecla para continuar");
+    Console.ReadLine();
+    Console.Clear();
+    ExibirOpcoesDoMenu();
+}
 
-ExibirOpcoesDoMenu();
