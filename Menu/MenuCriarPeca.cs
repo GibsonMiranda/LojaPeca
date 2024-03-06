@@ -20,7 +20,7 @@ namespace LojaPeca.Menu
             var valorPeca = Convert.ToInt32(valor);
             VendaBusiness vendaBusiness = new VendaBusiness();
             vendaBusiness.CriarPeca(descricao, valorPeca);
-            Console.WriteLine("Peça Criada Com Sucesso!");
+            Console.WriteLine("Peça Criada Com Sucesso! Pressione qualquer tecla para sair.");
             Console.Clear();
         }
      

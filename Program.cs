@@ -1,14 +1,15 @@
-﻿using LojaPeca.Business;
+﻿using LojaPeca.Banco;
+using LojaPeca.Business;
 using LojaPeca.Menu;
+using LojaPeca.Modelos;
 using Microsoft.EntityFrameworkCore.Query.Internal;
-
-
 
 IDictionary<int, Menu> opcoes = new Dictionary<int, Menu>();
 opcoes.Add(1, new MenuCriarPeca());
 opcoes.Add(2, new MenuAdicionarPecaVenda());
-opcoes.Add(3, new MenuMostrarVendaPeca());
-opcoes.Add(4, new MenuLimparVenda());
+opcoes.Add(3, new MenuLimparVenda());
+opcoes.Add(4, new MenuFinalizarVenda());
+opcoes.Add(5, new MenuMostrarVendaPeca());
 
 
 void ExibirLogo()
@@ -23,9 +24,10 @@ void ExibirOpcoesDoMenu()
     ExibirLogo();
     Console.WriteLine("\nDigite 1 para criar uma peça");
     Console.WriteLine("Digite 2 para adicionar uma peça à venda existente");
-    Console.WriteLine("Digite 3 para mostrar as relações de vendas");
-    Console.WriteLine("Digite 4 para limpar uma venda");
-    //Console.WriteLine("Digite -1 para sair");
+    Console.WriteLine("Digite 3 para limpar uma venda");
+    Console.WriteLine("Digite 4 para finalizar a venda");
+    Console.WriteLine("Digite 5 para mostrar as relações de vendas");
+    Console.WriteLine("Digite -1 para sair");
 
     Console.Write("\nDigite a sua opção: ");
     string opcaoEscolhida = Console.ReadLine()!;

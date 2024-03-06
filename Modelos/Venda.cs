@@ -12,5 +12,10 @@ namespace LojaPeca.Modelos
         public double ValorTotalComDesconto { get; set; }
         public bool VendaFinalizada { get; set; }
         public bool VendaCancelada { get; set; }
+
+        public override string ToString()
+        {
+            return $"Venda Id: {Id} - Data da Venda: {Data} - Total: R$ {ValorTotalComDesconto} - Venda Finalizada? {VendaFinalizada} / Venda Cancelada? {VendaCancelada}";
+        }
     }
 }

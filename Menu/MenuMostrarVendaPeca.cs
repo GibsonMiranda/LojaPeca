@@ -14,15 +14,14 @@ namespace LojaPeca.Menu
         public override void Executar()
         {
             base.Executar();
-            ExibirTituloDaOpcao("Mostrar Relação de Vendas");
-            Thread.Sleep(3000);
+            ExibirTituloDaOpcao("Mostrar Relação de Vendas");           
             LojaPecaDAO<VendaPeca> vendaPeca = new LojaPecaDAO<VendaPeca>(new LojaPecaContext());
             foreach (var vendaP in vendaPeca.Listar())
             {
                 Console.WriteLine(vendaP.ToString());
             }
 
-            Console.WriteLine("Digite uma tecla para voltar ao menu principal");
+            Console.WriteLine("Pressione qualquer tecla para sair.");
             Console.ReadKey();
             Console.Clear();
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LojaPeca.Banco
 {
-    internal class LojaPecaDAO<T>(LojaPecaContext context) where T : class
+    internal class LojaPecaDAO<T>(LojaPecaContext context) where T : class // classe responsável pelo CRUD.
     {
         
 
@@ -15,30 +15,30 @@ namespace LojaPeca.Banco
        
         public IEnumerable<T> Listar()
         {
-            return dbSet.ToList(); // já pega a lista dos artistas bem rapidin
+            return dbSet.ToList(); 
         }
 
         public void Adicionar(T valor)
         {
-            //using var context = new ScreenSoundContext(); 
-            dbSet.Add(valor); // adicionar o artista 
-            context.SaveChanges(); // salva a alteração
+             
+            dbSet.Add(valor);
+            context.SaveChanges(); 
         }
         public void Atualizar(T valor)
         {
-            dbSet.Update(valor); // adicionar o artista 
-            context.SaveChanges(); // salva a alteração
+            dbSet.Update(valor); 
+            context.SaveChanges(); 
         }
         public void Deletar(T valor)
         {
-            dbSet.Remove(valor); // adicionar o artista 
-            context.SaveChanges(); // salva a alteração
+            dbSet.Remove(valor); 
+            context.SaveChanges();
         }
         public void DeletarTodos(Func<T, bool> condicao)
         {
             var list = dbSet.Where(condicao);
-            dbSet.RemoveRange(list); // adicionar o artista 
-            context.SaveChanges(); // salva a alteração
+            dbSet.RemoveRange(list);
+            context.SaveChanges(); 
         }
 
         public T? RecuperarUmPor(Func<T, bool> condicao)
