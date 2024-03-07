@@ -1,1 +1,1 @@
-﻿
+﻿delete from VendaPeca where id = 1012

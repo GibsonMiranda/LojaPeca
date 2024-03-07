@@ -108,6 +108,7 @@ namespace LojaPeca.Business
             else
             {
                 venda.VendaCancelada = true;
+                vendaDAO.Atualizar(venda);
             }
         }
         private Venda BuscarVenda(int idVenda)
@@ -164,65 +165,88 @@ namespace LojaPeca.Business
         public void FinalizarVenda(int idVenda)
         {
             var vendaExistente = BuscarVenda(idVenda);
-            var total = vendaPecaDAO.RecuperarListaPor(v => v.Venda.Id == idVenda).Sum(v => v.Quantidade * v.ValorUnitario);
+            var total = vendaPecaDAO.RecuperarListaPor(v => v.Venda.Id == idVenda).Sum(v => v.Quantidade * v.ValorUnitario);            
+            var qtdPecasTotal = vendaPecaDAO.RecuperarListaPor(v => v.Venda.Id == idVenda).Sum(v => v.Quantidade);  
             
-            var qtdPeca1 = vendaPecaDAO.RecuperarListaPor(v => v.Venda.Id == idVenda && v.Quantidade > 200);
-            var qtdPeca2 = vendaPecaDAO.RecuperarListaPor(v => v.Venda.Id == idVenda && v.Quantidade > 80);
-            var qtdPeca3 = vendaPecaDAO.RecuperarListaPor(v => v.Venda.Id == idVenda && v.Quantidade > 40);
-            if (!vendaExistente.VendaFinalizada)
-            {               
-                Console.WriteLine($" Total Sem Desconto: R$ {total}");
-                if (total > 3000)
-                {
-                    total *= 0.85;
-                    Console.WriteLine($"Desconto aplicado no valor de 15% - Total da Compra: R$ {total}");
-                } 
-                else if (total > 1500) 
-                {
-                    total *= 0.88;
-                    Console.WriteLine($"Desconto aplicado no valor de 12% - Total da Compra: R$ {total}");
-                } 
-                else if (total > 750)
-                {
-                    total *= 0.92;
-                    Console.WriteLine($"Desconto aplicado no valor de 8% - Total da Compra: R$ {total}");
-                }
-                else if (total > 350)
-                {
-                    total *= 0.95;
-                    Console.WriteLine($"Desconto aplicado no valor de 5% - Total da Compra: R$ {total}");
-                } 
-                else if (total > 250)
-                {
-                    total *= 0.98;
-                    Console.WriteLine($"Desconto aplicado no valor de 2% - Total da Compra: R$ {total}");
-                }
-                if (qtdPeca1 is not null) 
-                {
-                    total *= 0.90;
-                    Console.WriteLine($"Desconto extra de 10% para quantidade acima de 200. Total: {total}");
-                }
-                else if (qtdPeca2 is not null)
-                {
-                    total *= 0.95;
-                    Console.WriteLine($"Desconto extra de 5% para quantidade acima de 80. Total: {total}");
-                }
-                else if (qtdPeca3 is not null)
-                {
-                    total *= 0.98;
-                    Console.WriteLine($"Desconto extra de 2% para quantidade acima de 40. Total: {total}");
-                }
-                Console.WriteLine($"Total da Compra: R$ {total}");
-            }
-            else 
+            if (vendaExistente.VendaFinalizada  || vendaExistente.VendaCancelada)
             {
                 throw new Exception("impossível alterar");
             }
+            else 
+            {
+                Console.WriteLine($" Total Sem Desconto: R$ {total}");
+                CalcularDescontoPorCondicao(ref total);                      
+                CalcularDescontoQtdPeca(ref total, qtdPecasTotal);
+              
+
+            }
             vendaExistente.ValorTotalComDesconto = total;
             vendaExistente.VendaFinalizada = true;
-            vendaDAO.Atualizar(vendaExistente);
-            vendaPecaDAO.DeletarTodos(v => v.Venda.Id == idVenda);
+            vendaDAO.Atualizar(vendaExistente);          
             Console.WriteLine(vendaExistente.ToString());
+        }
+
+        public void CalcularDesconto(ref double total, double desconto, bool calculoPeca = false, int faixaDescontoPeca = 0)
+        {
+           
+            desconto = desconto / 100;
+            total *= 1 - desconto;
+            if (calculoPeca)
+            {
+                Console.WriteLine($"Total da Compra com o desconto de {desconto * 100}% para quantidade de peças acima de {faixaDescontoPeca}: R$ {total}");
+            }
+            else
+            {
+                Console.WriteLine($"Total da Compra com o desconto de {desconto * 100}%: R$ {total}");
+            }
+        }
+        public double CalcularDescontoPorCondicao(ref double total)
+        {
+            if (total > 3000)
+            {
+                CalcularDesconto(ref total, 15);
+                return total;
+            }
+            else if (total > 1500)
+            {
+                CalcularDesconto(ref total, 12);
+                return total;
+            }
+            else if (total > 750)
+            {
+                CalcularDesconto(ref total, 8);
+                return total;
+            }
+            else if (total > 350)
+            {
+                CalcularDesconto(ref total, 5);
+                return total;
+            }
+            else if (total > 250)
+            {
+                CalcularDesconto(ref total, 2);
+                return total;
+            }
+            return total;
+        }
+        public double CalcularDescontoQtdPeca(ref double total , int qtdPecasTotal)
+        {
+            if (qtdPecasTotal > 200)
+            {
+                CalcularDesconto(ref total, 10, true, 200);               
+                return total;
+            }
+            else if (qtdPecasTotal > 80)
+            {
+                CalcularDesconto(ref total, 5);              
+                return total;
+            }
+            else if (qtdPecasTotal > 40)
+            {
+                CalcularDesconto(ref total, 2);               
+                return total;
+            }
+            return total;
         }
     }
 }
